@@ -1,13 +1,10 @@
 package vuln
 
-import (
-	"context"
+import version "github.com/knqyf263/go-apk-version"
 
-	version "github.com/knqyf263/go-apk-version"
-)
-
-type Detector interface {
-	VulnerabilitiesForPackages(context.Context, ...string) (map[string][]Match, error)
+type Searcher interface {
+	VulnerabilitiesForPackage(name string) ([]Match, error)
+	AllVulnerabilities() (map[string][]Match, error)
 }
 
 type Match struct {
