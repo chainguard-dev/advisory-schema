@@ -2,7 +2,6 @@
 package sftracker
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -12,27 +11,22 @@ import (
 	"github.com/wolfi-dev/wolfictl/pkg/vuln"
 )
 
-var _ vuln.Detector = (*SecfixesTracker)(nil)
+var _ vuln.Searcher = (*SecfixesTracker)(nil)
 
 type SecfixesTracker struct {
 	baseURL string
 	client  *http.Client
 }
 
-// NewDetector returns a new Secfixes Tracker client.
-func NewDetector(baseURL string, httpClient *http.Client) *SecfixesTracker {
+// New returns a new Secfixes Tracker client.
+func New(baseURL string, httpClient *http.Client) *SecfixesTracker {
 	return &SecfixesTracker{
 		baseURL: baseURL,
 		client:  httpClient,
 	}
 }
 
-func (s *SecfixesTracker) VulnerabilitiesForPackages(_ context.Context, _ ...string) (map[string][]vuln.Match, error) {
-	// TODO: either implement this method or delete the whole SecfixesTracker type.
-	panic("implement me")
-}
-
-func (s *SecfixesTracker) VulnerabilitiesForPackage(_ context.Context, name string) ([]vuln.Match, error) {
+func (s *SecfixesTracker) VulnerabilitiesForPackage(name string) ([]vuln.Match, error) {
 	wrapErr := func(err error) error {
 		return fmt.Errorf("unable to get vulnerabilities for package %q: %w", name, err)
 	}
@@ -56,7 +50,7 @@ func (s *SecfixesTracker) VulnerabilitiesForPackage(_ context.Context, name stri
 	return result, nil
 }
 
-func (s *SecfixesTracker) AllVulnerabilities(_ context.Context) (map[string][]vuln.Match, error) {
+func (s *SecfixesTracker) AllVulnerabilities() (map[string][]vuln.Match, error) {
 	wrapErr := func(err error) error {
 		return fmt.Errorf("unable to get vulnerabilities for distro: %w", err)
 	}
