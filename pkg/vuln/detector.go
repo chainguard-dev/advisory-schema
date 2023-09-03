@@ -12,8 +12,7 @@ type Detector interface {
 
 type Match struct {
 	Package       Package
-	CPESearched   CPE
-	CPEFound      CPE
+	CPE           CPE
 	Vulnerability Vulnerability
 }
 
