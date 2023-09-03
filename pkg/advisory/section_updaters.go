@@ -1,4 +1,4 @@
-package v1
+package advisory
 
 import (
 	"github.com/wolfi-dev/wolfictl/pkg/configs"
