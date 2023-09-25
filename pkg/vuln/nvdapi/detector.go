@@ -66,21 +66,12 @@ var (
 	rateLimiterWithAuth    = rate.NewLimiter(rate.Every(time.Second*30/50), 1) // ~50 reqs per 30 sec
 )
 
-func (d *Detector) VulnerabilitiesForPackage(ctx context.Context, pkg string) ([]vuln.Match, error) {
-	matches, err := d.vulnerabilitiesForPackage(ctx, pkg)
-	if err != nil {
-		return nil, err
-	}
-
-	return matches, nil
-}
-
 // VulnerabilitiesForPackages uses CPE-based queries to the NVD API to detect
 // vulnerability matches for the given list of packages. It returns a map of
 // package names to slices of vulnerability matches for that package. This
 // method's requests to the NVD API are constrained by the Detector's configured
 // rate limiter.
-func (d *Detector) VulnerabilitiesForPackages(ctx context.Context, packages ...string) (map[string][]vuln.Match, error) {
+func (s *Detector) VulnerabilitiesForPackages(ctx context.Context, packages ...string) (map[string][]vuln.Match, error) {
 	matchesByPackage := make(map[string][]vuln.Match)
 	matchesByPackageMutex := new(sync.Mutex) // avoid map concurrency issues
 
@@ -90,7 +81,7 @@ func (d *Detector) VulnerabilitiesForPackages(ctx context.Context, packages ...s
 		pkg := pkg // https://go.dev/doc/faq#closures_and_goroutines
 
 		g.Go(func() error {
-			matches, err := d.vulnerabilitiesForPackage(ctx, pkg)
+			matches, err := s.vulnerabilitiesForPackage(ctx, pkg)
 			if err != nil {
 				return err
 			}
@@ -117,16 +108,17 @@ func (d *Detector) VulnerabilitiesForPackages(ctx context.Context, packages ...s
 	return matchesByPackage, nil
 }
 
-func (d *Detector) vulnerabilitiesForPackage(ctx context.Context, name string) ([]vuln.Match, error) {
-	requestCPE := d.getCPE(name)
+func (s *Detector) vulnerabilitiesForPackage(ctx context.Context, name string) ([]vuln.Match, error) {
+	requestCPE := s.getCPE(name)
 
 	var result []vuln.Match
 
-	cves, err := d.doSearch(ctx, requestCPE)
+	cves, err := s.doSearch(ctx, requestCPE)
 	if err != nil {
 		if errors.Is(err, ErrRateLimited) {
-			time.Sleep(5 * time.Second)
-			return d.vulnerabilitiesForPackage(ctx, name)
+			log.Printf("🚫 rate limited by NVD! waiting 1 minute...")
+			time.Sleep(time.Minute)
+			return s.vulnerabilitiesForPackage(ctx, name)
 		}
 		return nil, err
 	}
@@ -211,9 +203,8 @@ func determineVulnMatch(cve *Cve, packageName, requestCPE string) (*vuln.Match, 
 						VersionRange: vr,
 					},
 					Vulnerability: vuln.Vulnerability{
-						ID:       cve.ID,
-						URL:      fmt.Sprintf("https://nvd.nist.gov/vuln/detail/%s", cve.ID),
-						Severity: getSeverity(*cve),
+						ID:  cve.ID,
+						URL: fmt.Sprintf("https://nvd.nist.gov/vuln/detail/%s", cve.ID),
 					},
 				}
 
@@ -223,32 +214,6 @@ func determineVulnMatch(cve *Cve, packageName, requestCPE string) (*vuln.Match, 
 	}
 
 	return nil, nil
-}
-
-func getSeverity(cve Cve) vuln.Severity {
-	if len(cve.Metrics.CvssMetricV31) < 1 {
-		return ""
-	}
-
-	score := cve.Metrics.CvssMetricV31[0]
-	baseSeverity := score.CvssData.BaseSeverity
-
-	switch baseSeverity {
-	case "LOW":
-		return vuln.SeverityLow
-
-	case "MEDIUM":
-		return vuln.SeverityMedium
-
-	case "HIGH":
-		return vuln.SeverityHigh
-
-	case "CRITICAL":
-		return vuln.SeverityCritical
-
-	default:
-		return vuln.SeverityUnknown
-	}
 }
 
 func cpeStringsMatch(requestCPE, responseCPE string) (bool, error) {
@@ -273,8 +238,8 @@ func cpeStringsMatch(requestCPE, responseCPE string) (bool, error) {
 
 var ErrRateLimited = errors.New("we've been rate limited by NVD! 🙊")
 
-func (d *Detector) doSearch(ctx context.Context, cpe string) ([]Cve, error) {
-	err := d.rateLimiter.Wait(ctx)
+func (s *Detector) doSearch(ctx context.Context, cpe string) ([]Cve, error) {
+	err := s.rateLimiter.Wait(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -289,8 +254,8 @@ func (d *Detector) doSearch(ctx context.Context, cpe string) ([]Cve, error) {
 
 	reqURL := fmt.Sprintf(
 		"https://%s%s?virtualMatchString=%s",
-		d.serviceHost,
-		d.serviceEndpoint,
+		s.serviceHost,
+		s.serviceEndpoint,
 		cpe,
 	)
 
@@ -302,13 +267,12 @@ func (d *Detector) doSearch(ctx context.Context, cpe string) ([]Cve, error) {
 	req.Header["Accept"] = []string{"application/json"}
 	req.Header["User-Agent"] = []string{"wolfictl"}
 
-	if k := d.apiKey; k != "" {
-		req.Header["apiKey"] = []string{d.apiKey}
+	if k := s.apiKey; k != "" {
+		req.Header["apiKey"] = []string{s.apiKey}
 	}
 
-	// TODO: event for request starting
-
-	resp, err := d.client.Do(req)
+	log.Printf("☎️  sending API request: %s", reqURL)
+	resp, err := s.client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("unable to complete request to URL %q: %w", reqURL, err)
 	}
@@ -372,7 +336,7 @@ func convertCpeMatchToVersionRange(m CpeMatch) (vuln.VersionRange, error) {
 	return vr, nil
 }
 
-func (d *Detector) getCPE(packageName string) string {
+func (s *Detector) getCPE(packageName string) string {
 	// Chop off any version suffixes from package names like `clang-15` and `go-1.20`.
 	if matches := regexWithVersionSuffix.FindStringSubmatch(packageName); len(matches) >= 2 {
 		packageName = matches[1]
@@ -380,7 +344,7 @@ func (d *Detector) getCPE(packageName string) string {
 
 	// Use a more precise CPE, if we have one. Otherwise, just create a CPE using
 	// the package name as the 'product'.
-	cpe, ok := d.packageToCPE[packageName]
+	cpe, ok := s.packageToCPE[packageName]
 	if !ok {
 		cpe = wfn.Attributes{
 			Product: packageName,
