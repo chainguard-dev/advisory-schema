@@ -7,7 +7,6 @@ import (
 
 	"github.com/hashicorp/go-version"
 	"github.com/samber/lo"
-	"github.com/wolfi-dev/wolfictl/pkg/internal/errorhelpers"
 	"gopkg.in/yaml.v3"
 )
 
@@ -28,7 +27,7 @@ func (doc Document) Name() string {
 }
 
 func (doc Document) Validate() error {
-	return errorhelpers.LabelError(doc.Name(),
+	return labelError(doc.Name(),
 		errors.Join(
 			doc.ValidateSchemaVersion(),
 			doc.Package.Validate(),
@@ -97,7 +96,7 @@ func (advs Advisories) Validate() error {
 		return fmt.Errorf("this file should not exist if there are no advisories recorded")
 	}
 
-	return errorhelpers.LabelError("advisories",
+	return labelError("advisories",
 		errors.Join(lo.Map(advs, func(adv Advisory, _ int) error {
 			return adv.Validate()
 		})...),
