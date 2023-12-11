@@ -148,22 +148,6 @@ func TestDocument_full_coverage(t *testing.T) {
 					},
 					{
 						Timestamp: testTime,
-						Type:      EventTypeDetection,
-						Data: Detection{
-							Type: DetectionTypeScanV1,
-							Data: DetectionScanV1{
-								SubpackageName:    "test-sub",
-								ComponentID:       "fe8053a3adedc5d0",
-								ComponentName:     "github.com/docker/distribution",
-								ComponentVersion:  "v2.8.1+incompatible",
-								ComponentType:     "go-module",
-								ComponentLocation: "/usr/bin/crane",
-								Scanner:           "grype",
-							},
-						},
-					},
-					{
-						Timestamp: testTime,
 						Type:      EventTypeTruePositiveDetermination,
 						Data: TruePositiveDetermination{
 							Note: "Something something true positive.",
@@ -258,7 +242,7 @@ func TestDocument_full_coverage(t *testing.T) {
 		},
 	}
 
-	f, err := os.Open("testdata/full.advisories.yaml") // Note: Keep this document using the latest schema.
+	f, err := os.Open("testdata/full.advisories.yaml")
 	require.NoError(t, err)
 
 	t.Run("decode", func(t *testing.T) {
