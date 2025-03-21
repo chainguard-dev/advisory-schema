@@ -1,0 +1,10 @@
+# Copyright 2024 Chainguard, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
+issuer: https://token.actions.githubusercontent.com
+subject: repo:chainguard-dev/advisory-schema:ref:refs/tags/v.*
+claim_pattern:
+  job_workflow_ref: chainguard-dev/advisory-schema/.github/workflows/release.yaml@.*
+
+permissions:
+  contents: write
