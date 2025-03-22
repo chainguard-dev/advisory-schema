@@ -6,5 +6,6 @@ subject: repo:chainguard-dev/advisory-schema:ref:refs/tags/v.*
 claim_pattern:
   job_workflow_ref: chainguard-dev/advisory-schema/.github/workflows/release.yaml@.*
 
+# the release workflow needs write permissions to push tags
 permissions:
   contents: write
