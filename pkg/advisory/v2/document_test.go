@@ -266,7 +266,7 @@ func TestDocument_full_coverage(t *testing.T) {
 	t.Run("decode", func(t *testing.T) {
 		expected := testDocument
 
-		actual, err := DecodeDocument(f)
+		actual, err := decodeDocument(f)
 		require.NoError(t, err)
 
 		if diff := cmp.Diff(expected, *actual); diff != "" {
