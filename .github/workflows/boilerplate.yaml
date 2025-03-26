@@ -1,0 +1,75 @@
+# Copyright 2025 Chainguard, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
+name: Boilerplate
+
+on:
+  pull_request:
+    branches:
+      - "main"
+
+permissions: {}
+
+jobs:
+  check:
+    permissions:
+      contents: read
+
+    name: Boilerplate Check
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false # Keep running if one leg fails.
+      matrix:
+        extension:
+          - go
+          - sh
+          - yaml
+          - yml
+
+        # Map between extension and human-readable name.
+        include:
+          - extension: go
+            language: Go
+          - extension: sh
+            language: Bash
+          - extension: yaml
+            language: YAML
+          - extension: yml
+            language: YAML
+
+    steps:
+      - uses: step-security/harden-runner@4d991eb9b905ef189e4c376166672c3f2f230481 # v2.11.0
+        with:
+          egress-policy: audit
+
+      - name: Check out code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: chainguard-dev/actions/boilerplate@76af37936141ab4766b6578400f136c2621614fd # main
+        with:
+          extension: ${{ matrix.extension }}
+          language: ${{ matrix.language }}
+          exclude: "((vendor|third_party|testdata|static)/|.pb(.gw)?.go|.generated.go)"
+
+  boilerplate-check:
+    permissions:
+      actions: read
+
+    needs:
+      - check
+    runs-on: ubuntu-latest
+    if: always() # always run as required and if any dependent job is skipped, this is skipped if not always
+    steps:
+      - uses: step-security/harden-runner@4d991eb9b905ef189e4c376166672c3f2f230481 # v2.11.0
+        with:
+          egress-policy: audit
+
+      - uses: technote-space/workflow-conclusion-action@45ce8e0eb155657ab8ccf346ade734257fd196a5 # v3.0.3
+
+      - if: ${{ env.WORKFLOW_CONCLUSION == 'success' }}
+        working-directory: /tmp
+        run: echo ${{ env.WORKFLOW_CONCLUSION }} && exit 0
+
+      - if: ${{ env.WORKFLOW_CONCLUSION == 'failure' }}
+        working-directory: /tmp
+        run: echo ${{ env.WORKFLOW_CONCLUSION }} && exit 1
