@@ -1,0 +1,21 @@
+# Copyright 2025 Chainguard, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
+---
+version: 2
+updates:
+- package-ecosystem: gomod
+  directory: "/"
+  schedule:
+    interval: "weekly"
+  open-pull-requests-limit: 10
+  groups:
+    all:
+      update-types:
+        - "minor"
+        - "patch"
+- package-ecosystem: "github-actions"
+  directory: "/"
+  schedule:
+    interval: "weekly"
+  open-pull-requests-limit: 10
