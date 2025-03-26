@@ -6,9 +6,9 @@ import (
 	"io"
 	"sort"
 
+	"github.com/chainguard-dev/advisory-schema/pkg/internal/errorhelpers"
 	"github.com/hashicorp/go-version"
 	"github.com/samber/lo"
-	"github.com/wolfi-dev/wolfictl/pkg/internal/errorhelpers"
 	"gopkg.in/yaml.v3"
 )
 

@@ -6,10 +6,10 @@ import (
 	"slices"
 	"sort"
 
+	"github.com/chainguard-dev/advisory-schema/pkg/internal/errorhelpers"
+	"github.com/chainguard-dev/advisory-schema/pkg/vuln"
 	"github.com/samber/lo"
-	"github.com/wolfi-dev/wolfictl/pkg/internal/errorhelpers"
 	"github.com/wolfi-dev/wolfictl/pkg/versions"
-	"github.com/wolfi-dev/wolfictl/pkg/vuln"
 )
 
 type Advisory struct {

@@ -6,8 +6,8 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/wolfi-dev/wolfictl/pkg/internal/errorhelpers"
-	"github.com/wolfi-dev/wolfictl/pkg/vuln"
+	"github.com/chainguard-dev/advisory-schema/pkg/internal/errorhelpers"
+	"github.com/chainguard-dev/advisory-schema/pkg/vuln"
 	"gopkg.in/yaml.v3"
 )
 
