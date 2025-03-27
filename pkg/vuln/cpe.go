@@ -14,7 +14,7 @@ func ValidateCPE(cpe string) error {
 
 	_, err := wfn.Parse(cpe)
 	if err != nil {
-		return fmt.Errorf("invalid CPE %q: %v", cpe, err)
+		return fmt.Errorf("invalid CPE %q: %w", cpe, err)
 	}
 
 	return nil
