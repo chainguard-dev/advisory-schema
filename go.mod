@@ -12,10 +12,16 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
-require golang.org/x/text v0.21.0 // indirect
+require (
+	github.com/package-url/packageurl-go v0.1.1 // indirect
+	github.com/sirupsen/logrus v1.9.3 // indirect
+	golang.org/x/sys v0.8.0 // indirect
+	golang.org/x/text v0.21.0 // indirect
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/openvex/go-vex v0.2.5
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/samber/lo v1.49.1
 )

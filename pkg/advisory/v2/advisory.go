@@ -7,9 +7,9 @@ import (
 	"sort"
 
 	"github.com/chainguard-dev/advisory-schema/pkg/internal/errorhelpers"
+	"github.com/chainguard-dev/advisory-schema/pkg/versions"
 	"github.com/chainguard-dev/advisory-schema/pkg/vuln"
 	"github.com/samber/lo"
-	"github.com/wolfi-dev/wolfictl/pkg/versions"
 )
 
 type Advisory struct {

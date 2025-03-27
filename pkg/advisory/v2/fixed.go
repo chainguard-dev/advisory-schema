@@ -3,7 +3,7 @@ package v2
 import (
 	"fmt"
 
-	"github.com/wolfi-dev/wolfictl/pkg/versions"
+	"github.com/chainguard-dev/advisory-schema/pkg/versions"
 )
 
 // Fixed is an event that indicates that a vulnerability has been remediated in
