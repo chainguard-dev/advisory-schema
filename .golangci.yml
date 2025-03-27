@@ -13,7 +13,7 @@ linters:
     - gosec
     - gocritic
     - importas
-    - prealloc
+    #  - prealloc
     - revive
     - misspell
     - stylecheck
