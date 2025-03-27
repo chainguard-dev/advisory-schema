@@ -1,3 +1,8 @@
+/*
+Copyright 2025 Chainguard, Inc.
+SPDX-License-Identifier: Apache-2.0
+*/
+
 package v2
 
 // PackageAdvisory is an Advisory that includes the package name for that
