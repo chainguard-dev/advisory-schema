@@ -118,6 +118,4 @@ If `wolfictl` is updating an existing document, it will also set the document's 
 
 ## Releases
 
-This repository is configured to automatically create weekly tagged patch releases.
-
-Releases happen Monday at 00:00 UTC, and can be manually run as necessary.
+This repository is configured to create tagged patch releases, which are currently triggered manually.
