@@ -119,3 +119,10 @@ If `wolfictl` is updating an existing document, it will also set the document's 
 ## Releases
 
 This repository is configured to create tagged patch releases, which are currently triggered manually.
+
+## Contribution Policy
+
+This repository is open source under the [Apache License 2.0](./LICENSE). We hope it can be useful, educational, or inspiring for others.
+While the code is publicly available, we are **only accepting contributions (including pull requests and feature proposals) from Chainguard employees**.
+
+We truly appreciate your interest, and you're more than welcome to fork, explore, or build upon this project within the terms of the license. Thanks for understanding!
