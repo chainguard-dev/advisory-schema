@@ -39,7 +39,7 @@ func (t Timestamp) MarshalYAML() (interface{}, error) {
 
 // UnmarshalYAML implements yaml.Unmarshaler.
 func (t *Timestamp) UnmarshalYAML(v *yaml.Node) error {
-	if !(v.Kind == yaml.ScalarNode && v.Tag == yamlTagTimestamp) {
+	if v.Kind != yaml.ScalarNode || v.Tag != yamlTagTimestamp {
 		return fmt.Errorf("expected a timestamp, got %s", v.Tag)
 	}
 
