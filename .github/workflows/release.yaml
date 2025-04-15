@@ -69,7 +69,7 @@ jobs:
         uses: chainguard-dev/actions/git-tag@main
         if: steps.check.outputs.bump == 'yes'
         with:
-          github_token: ${{ steps.octo-sts.outputs.token }}
+          token: ${{ steps.octo-sts.outputs.token }}
           git_tag_prefix: "v"
           bump_level: ${{ inputs.release_type }}
           dry_run: ${{ inputs.dry_run }}
