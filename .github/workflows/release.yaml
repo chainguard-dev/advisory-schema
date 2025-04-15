@@ -13,8 +13,8 @@ on:
         description: "dry-run mode: if true, no git tags will be pushed."
         type: boolean
         default: false
-      release_type:
-        description: "Type of Release"
+      version_bump:
+        description: "Version Bump Type"
         required: true
         default: build
         type: choice
@@ -73,6 +73,6 @@ jobs:
           author: "octo-sts[bot] <157150467+octo-sts[bot]@users.noreply.github.com>"
           committer: "octo-sts[bot] <157150467+octo-sts[bot]@users.noreply.github.com>"
           git_tag_prefix: "v"
-          bump_level: ${{ inputs.release_type }}
+          bump_level: ${{ inputs.version_bump }}
           dry_run: ${{ inputs.dry_run }}
           forced_version: ${{ inputs.forced_version }}
