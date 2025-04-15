@@ -66,7 +66,7 @@ jobs:
           identity: release
 
       - name: Bump and push Git tag
-        uses: chainguard-dev/actions/git-tag@855d928df4d35ab87d1495993810ba7725a2f8bb # v1.0.0
+        uses: chainguard-dev/actions/git-tag@f309c81b34d59c103f5b86a2e55a2a647dc8b40a # v1.0.1
         if: steps.check.outputs.bump == 'yes'
         with:
           token: ${{ steps.octo-sts.outputs.token }}
