@@ -39,6 +39,7 @@ jobs:
 
     permissions:
       id-token: write # to inject the OIDC token to octo-sts
+      contents: read # to read the repo and tags
 
     steps:
       - name: Harden Runner
