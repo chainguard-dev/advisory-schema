@@ -11,6 +11,7 @@ import (
 	"slices"
 	"sort"
 
+	cgaid "github.com/chainguard-dev/advisory-schema/pkg/advisory"
 	"github.com/chainguard-dev/advisory-schema/pkg/internal/errorhelpers"
 	"github.com/chainguard-dev/advisory-schema/pkg/versions"
 	"github.com/chainguard-dev/advisory-schema/pkg/vuln"
@@ -172,7 +173,7 @@ func (adv Advisory) isFixedVersion(version, packageType string, latest Event) bo
 func (adv Advisory) Validate() error {
 	return errorhelpers.LabelError(adv.ID,
 		errors.Join(
-			vuln.ValidateCGAID(adv.ID),
+			cgaid.ValidateCGAID(adv.ID),
 			adv.validateAliases(),
 			adv.validateEvents(),
 		),
