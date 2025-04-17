@@ -8,7 +8,6 @@ package advisory
 import (
 	"testing"
 
-	"github.com/chainguard-dev/advisory-schema/pkg/vuln"
 	"github.com/stretchr/testify/require"
 )
 
@@ -17,7 +16,7 @@ func TestGenerateCGAID(t *testing.T) {
 	numUUIDs := 10000
 
 	// Compile the regular expression once
-	regex := vuln.RegexCGA
+	regex := RegexCGA
 
 	for i := 0; i < numUUIDs; i++ {
 		uid, err := GenerateCGAID()
@@ -35,7 +34,7 @@ func TestGenerateCGAID(t *testing.T) {
 
 func TestGenerateCGAIDWithSeed(t *testing.T) {
 	// Compile the regular expression once
-	regex := vuln.RegexCGA
+	regex := RegexCGA
 
 	// Test deterministic output with a specific seed
 	seed := int64(12345)
@@ -52,7 +51,7 @@ func TestGenerateCGAIDWithSeed(t *testing.T) {
 
 func TestGenerateCGAIDFormat(t *testing.T) {
 	// Compile the regular expression once
-	regex := vuln.RegexCGA
+	regex := RegexCGA
 
 	// Test multiple seeds for format compliance
 	seeds := []int64{12345, 54321, 67890, 98765}
