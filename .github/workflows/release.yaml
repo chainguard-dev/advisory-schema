@@ -4,9 +4,8 @@
 name: release
 
 on:
-  # disabled weekly releases
-  #schedule:
-  #  - cron: '0 0 * * 1' # weekly on Monday at 00:00
+  schedule:
+    - cron: '0 0 * * 2' # weekly on Tuesday at 00:00
   workflow_dispatch:
     inputs:
       dry_run:
@@ -16,7 +15,7 @@ on:
       version_bump:
         description: "Version Bump Type"
         required: true
-        default: build
+        default: patch
         type: choice
         options:
           - major
@@ -78,6 +77,6 @@ jobs:
           author: "octo-sts[bot] <157150467+octo-sts[bot]@users.noreply.github.com>"
           committer: "octo-sts[bot] <157150467+octo-sts[bot]@users.noreply.github.com>"
           git_tag_prefix: "v"
-          bump_level: ${{ inputs.version_bump }}
-          dry_run: ${{ inputs.dry_run }}
-          forced_version: ${{ inputs.forced_version }}
+          bump_level: ${{ inputs.version_bump || 'patch' }}
+          dry_run: ${{ inputs.dry_run || 'false'}}
+          forced_version: ${{ inputs.forced_version || '' }}
