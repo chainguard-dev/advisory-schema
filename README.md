@@ -118,8 +118,10 @@ If `wolfictl` is updating an existing document, it will also set the document's 
 
 ## Releases
 
-This repository is configured to create releases using the [`git-tag` Chainguard GitHub Action](https://github.com/chainguard-dev/actions/tree/main/git-tag).
-Releases are currently triggered manually.
+This repository is configured to create releases using the [`git-tag` Chainguard GitHub Action](https://github.com/chainguard-dev/actions/tree/main/git-tag). Releases are triggered **only if changes have been made**, under the following conditions:
+
+- **Scheduled**: every Tuesday at 00:00 UTC, triggering a patch version release.
+- **Manual**: at any time via the [Release Workflow](https://github.com/chainguard-dev/advisory-schema/actions/workflows/release.yaml).
 
 ## Contribution Policy
 
