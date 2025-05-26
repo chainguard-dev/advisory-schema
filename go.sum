@@ -71,8 +71,8 @@ github.com/census-instrumentation/opencensus-proto v0.3.0/go.mod h1:f6KPmirojxKA
 github.com/cespare/xxhash v1.1.0/go.mod h1:XrSqR1VqqWfGrhpAt58auRo0WTKS1nRRg3ghfAqPWnc=
 github.com/cespare/xxhash/v2 v2.1.1/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
 github.com/cespare/xxhash/v2 v2.1.2/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
-github.com/chainguard-dev/yam v0.2.16 h1:dCkgXW3erqkKKDFALVRAv2dPxKtq+JChGqiKIE/a9DU=
-github.com/chainguard-dev/yam v0.2.16/go.mod h1:K0CNvz0b7DrYY4CL/57rLVh0qb9P+iYkq1aLqQQLG6A=
+github.com/chainguard-dev/yam v0.2.17 h1:sc2lVbPWzri6aa+7ilr4UqAJvlGR2HjA4Q6Wahkdh8I=
+github.com/chainguard-dev/yam v0.2.17/go.mod h1:K0CNvz0b7DrYY4CL/57rLVh0qb9P+iYkq1aLqQQLG6A=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
