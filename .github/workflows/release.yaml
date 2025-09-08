@@ -70,7 +70,7 @@ jobs:
           fi
 
       - name: Bump and push Git tag
-        uses: chainguard-dev/actions/git-tag@be7b31a01af8ce7228fe901326f1d223fb788e14 # v1.4.12
+        uses: chainguard-dev/actions/git-tag@f632aec66edeebe245ad686a33a0c0a2160cac31 # v1.4.14
         if: steps.check.outputs.bump == 'yes'
         with:
           token: ${{ steps.octo-sts.outputs.token }}
